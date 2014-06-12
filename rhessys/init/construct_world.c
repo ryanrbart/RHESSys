@@ -357,6 +357,7 @@ struct world_object *construct_world(struct command_line_object *command_line){
 	struct soil_default *construct_soil_defaults(int, char **, struct command_line_object *);
 	struct fire_default *construct_fire_defaults(int, char **, struct command_line_object *);
 	struct surface_energy_default *construct_surface_energy_defaults(int, char **, struct command_line_object *);
+	struct scm_default *construct_scm_defaults(int, char **, struct command_line_object *);
 	struct landuse_default *construct_landuse_defaults(int, char **, struct command_line_object *);
 	struct stratum_default *construct_stratum_defaults(int, char **, struct command_line_object *);
 	struct base_station_object *construct_base_station(char *,
@@ -614,6 +615,21 @@ struct world_object *construct_world(struct command_line_object *command_line){
 		world[0].surface_energy_default_files= construct_filename_list( header_file,
 			world[0].defaults[0].num_fire_default_files);
 	}
+
+	/*--------------------------------------------------------------*/
+	/*	If SCM option has been set                                 */
+	/* Read in the number of SCM default files.	                   */
+	/*--------------------------------------------------------------*/
+	if (command_line[0].scm_flag == 1) {
+		fscanf(header_file,"%d",&(world[0].defaults[0].num_scm_default_files));
+		read_record(header_file, record);
+		/*--------------------------------------------------------------*/
+		/*	Read in the SCM default files.                             */
+		/*--------------------------------------------------------------*/
+		world[0].scm_default_files= construct_filename_list( header_file,
+			world[0].defaults[0].num_scm_default_files);
+	}
+	
 	
 	/*--------------------------------------------------------------*/
 	/*	Read in the number of base_station files.		*/
@@ -714,6 +730,17 @@ struct world_object *construct_world(struct command_line_object *command_line){
 		world[0].defaults[0].surface_energy = construct_surface_energy_defaults(
 			world[0].defaults[0].num_surface_energy_default_files,
 			world[0].surface_energy_default_files, command_line);
+	}
+
+
+	/*--------------------------------------------------------------*/
+	/* if scm flag is set					*/
+	/*	Construct the scm default objects.			*/
+	/*--------------------------------------------------------------*/
+	if (command_line[0].scm_flag == 1) {
+		world[0].defaults[0].scm = construct_scm_defaults(
+			world[0].defaults[0].num_scm_default_files,
+			world[0].scm_default_files, command_line);
 	}
 
 

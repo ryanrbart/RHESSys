@@ -132,7 +132,7 @@ void	canopy_stratum_daily_I(
 	/*--------------------------------------------------------------*/
 	/* no processing at present for non-veg types			*/
 	/*--------------------------------------------------------------*/
-	if (stratum[0].defaults[0][0].epc.veg_type != NON_VEG) {
+	if (stratum[0].defaults[0][0].epc.veg_type != NON_VEG && stratum[0].defaults[0][0].epc.veg_type != ALGAE) {
 		
 	/*--------------------------------------------------------------*/
 	/*  zero all of the carbon daily flux variables.		*/
@@ -307,7 +307,7 @@ void	canopy_stratum_daily_I(
 			stratum[0].epv.min_vwc = 1.0;
 		} /* end litterfall end of season calculations */
 	} /* end grow flag */
-	}	/* end NON_VEG conditional */
+	}	/* end NOT NON_VEG/ NOT ALGAE conditional */
 	return;
 } /*end canopy_stratum_I.c*/
 

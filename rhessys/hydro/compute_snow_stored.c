@@ -165,7 +165,7 @@ double	compute_snow_stored(
 	/*								*/
 	/*	Update snow storage					*/
 	/*--------------------------------------------------------------*/
-	if (stratum[0].defaults[0][0].epc.veg_type != NON_VEG) {
+	if (stratum[0].defaults[0][0].epc.veg_type != NON_VEG&& stratum[0].defaults[0][0].epc.veg_type != ALGAE) {
 		snow_storage = min( stratum[0].snow_stored
 			+ potential_interception, stratum[0].epv.all_pai
 			* stratum[0].defaults[0][0].specific_snow_capacity );

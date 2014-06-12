@@ -353,6 +353,32 @@ struct stratum_default *construct_stratum_defaults(
 			default_object_list[i].epc.proj_sla *= command_line[0].veg_sen1;
 			default_object_list[i].epc.shade_sla_mult *= command_line[0].veg_sen2;
 		}
+          
+          
+                  
+          /*--------------------------------------------------------------*/
+		/* optionally read in ALGAE parameters                          */
+		/*--------------------------------------------------------------*/
+        
+          if (default_object_list[i].epc.veg_type == ALGAE) {
+               default_object_list[i].algae.growth_rate      = getDoubleParam(&paramCnt, &paramPtr, "algae.growth_rate", "%lf", 0.2, 1);
+               default_object_list[i].algae.growth_temptheta = getDoubleParam(&paramCnt, &paramPtr, "algae.growth_temptheta", "%lf", 1.066, 1);
+               default_object_list[i].algae.light_extinct    = getDoubleParam(&paramCnt, &paramPtr, "algae.light_extinct", "%lf", 0.2, 1);
+               default_object_list[i].algae.light_optimum    = getDoubleParam(&paramCnt, &paramPtr, "algae.light_optimum", "%lf", 10460.0, 1);
+               default_object_list[i].algae.nitro_halfsat    = getDoubleParam(&paramCnt, &paramPtr, "algae.nitro_halfsat", "%lf", 0.0002, 1);
+               default_object_list[i].algae.phos_halfsat     = getDoubleParam(&paramCnt, &paramPtr, "algae.phos_halfsat", "%lf", 0.00004, 1);
+               default_object_list[i].algae.phos_conc        = getDoubleParam(&paramCnt, &paramPtr, "algae.phos_conc", "%lf", 0.00005, 1);
+               default_object_list[i].algae.death_rate       = getDoubleParam(&paramCnt, &paramPtr, "algae.death_rate", "%lf", 0.15, 1);
+               default_object_list[i].algae.death_temptheta  = getDoubleParam(&paramCnt, &paramPtr, "algae.death_temptheta", "%lf", 1.08, 1);
+               default_object_list[i].algae.scm_photo_depth  = getDoubleParam(&paramCnt, &paramPtr, "algae.scm_photo_depth", "%lf", 1.5, 1);
+               default_object_list[i].algae.npref_coeff      = getDoubleParam(&paramCnt, &paramPtr, "algae.npref_coef", "%lf", 0.00005, 1);
+               default_object_list[i].algae.chla_to_C        = getDoubleParam(&paramCnt, &paramPtr, "algae.chla_to_C", "%lf", 0.025, 1);
+               default_object_list[i].algae.chla_to_N        = getDoubleParam(&paramCnt, &paramPtr, "algae.chla_to_N", "%lf", 0.14, 1);
+               default_object_list[i].algae.K_reflectance    = getDoubleParam(&paramCnt, &paramPtr, "algae.K_reflectance", "%lf", 0.03, 1);
+          }
+        
+          
+          
 
 		/*--------------------------------------------------------------*/
 		/*		Close the ith default file.								*/

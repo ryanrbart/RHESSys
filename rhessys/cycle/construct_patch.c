@@ -77,7 +77,7 @@ struct patch_object *construct_patch(
 	
 	void	sort_patch_layers(struct patch_object *);
 	void	*alloc(	size_t, char *, char *);
-     double *compute_stage_storage(
+     double[1000][3] compute_stage_storage(
           double,
           double,
           double,
@@ -91,7 +91,6 @@ struct patch_object *construct_patch(
 	int		soil_default_object_ID;
 	int		landuse_default_object_ID;
 	int		fire_default_object_ID;
-     int       scm_default_object_ID;
 	int		surface_energy_default_object_ID;
 	char		record[MAXSTR];
 	struct patch_object *patch;
@@ -127,11 +126,6 @@ struct patch_object *construct_patch(
 
 	if (command_line[0].surface_energy_flag == 1) {
 		fscanf(world_file,"%d",&(surface_energy_default_object_ID));
-		read_record(world_file, record);
-		}
-     
-	if (command_line[0].scm_flag == 1) {
-		fscanf(world_file,"%d",&(scm_default_object_ID));
 		read_record(world_file, record);
 		}
 
@@ -449,33 +443,6 @@ struct patch_object *construct_patch(
 	}
 
 
-     /*--------------------------------------------------------------*/
-	/* if scm  module is called assign scm defaults
-	/*--------------------------------------------------------------*/
-	if (command_line[0].scm_flag == 1) {
-	patch[0].scm_defaults = (struct scm_default **)
-		alloc( sizeof(struct scm_default *),"defaults",
-		"construct_patch" );
-	i = 0;
-	while (defaults[0].scm[i].ID != scm_default_object_ID) {
-		i++;
-		/*--------------------------------------------------------------*/
-		/*  Report an error if no match was found.  Otherwise assign    */
-		/*  the default to point to this patch.						    */
-		/*--------------------------------------------------------------*/
-		if ( i>= defaults[0].num_scm_default_files ){
-			fprintf(stderr,
-				"\nFATAL ERROR: in construct_patch, scm default ID %d not found for patch %d\n" ,
-				scm_default_object_ID, patch[0].ID);
-			exit(EXIT_FAILURE);
-		}
-	} /* end-while */
-	patch[0].scm_defaults[0] = &defaults[0].scm[i];
-	}
-
-
-
-
 	/*--------------------------------------------------------------*/
 	/* FOR now substitute worldfile m (if > 0) in defaults			*/
 	/*--------------------------------------------------------------*/
@@ -671,28 +638,17 @@ struct patch_object *construct_patch(
      /*--------------------------------------------------------------*/
 	/*	Initialize SCM patch variables                              */
 	/*--------------------------------------------------------------*/
- 
+    patch[0].preday_ET = 0;
+    patch[0].preday_scm_inflow = 0;
+    patch[0].preday_scm_outflow = 0;
+    patch[0].preday_scm_volume = 0;
+    patch[0].scm_stage_storage = compute_stage_storage(
+        patch[0].area,
+        patch[0].scm_defaults[0][0].maxH,
+        patch[0].scm_defaults[0][0].LtoW,
+        patch[0].scm_defaults[0][0].SS);
+    patch[0].scm_temp = 25; //default
 
-
-     
-          patch[0].preday_ET = 0;
-          patch[0].preday_scm_inflow = 0;
-          patch[0].preday_scm_outflow = 0;
-          patch[0].preday_scm_volume = 0;
-          patch[0].scm_temp = 25; //default
-          // Only call the compute_stage_storage if SCM flag is called, otherwise it may produce errors
-        	if (command_line[0].scm_flag == 1) {
-               patch[0].scm_stage_storage = compute_stage_storage(
-                    patch[0].area,
-                    patch[0].scm_defaults[0][0].maxH,
-                    patch[0].scm_defaults[0][0].LtoW,
-                    patch[0].scm_defaults[0][0].SS);
- 
-          }
-          else {
-               patch[0].scm_stage_storage = 0;
-          }
-     
 	return(patch);
 } /*end construct_patch.c*/
 

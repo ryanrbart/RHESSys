@@ -170,6 +170,7 @@
 #define GRASS 2
 #define C4GRASS 3
 #define LITTER 3
+#define ALGAE 4
 #define DECID 1
 #define EVERGREEN 0
 #define STATIC 0
@@ -243,6 +244,8 @@ struct	default_object
 	struct	fire_default		*fire;
 	int		num_surface_energy_default_files;
 	struct	surface_energy_default		*surface_energy;
+     int                num_scm_default_files;
+     struct        scm_default                *scm;
 	};
 
 
@@ -275,6 +278,7 @@ struct world_object
 	char	**landuse_default_files;
 	char	**stratum_default_files;
 	char	**zone_default_files;
+     char        **scm_default_files;
 	double	declin;			/*	rads	*/
 	double	cos_declin;		/*	DIM	*/
 	double	sin_declin;		/*	DIM	*/
@@ -1365,6 +1369,37 @@ struct	snowpack_object
 	double	overstory_height;		/* m		*/
 	};
 
+/*----------------------------------------------------------*/
+/*        Define the scm default params. structure.       */
+/*----------------------------------------------------------*/
+struct        scm_default
+{
+    int               ID;
+    double            maxH;      /* m */
+    double            LtoW; /* m/m */
+    double            SS;    /* m/m */
+    double            riser_L;   /* m */
+    double            riser_coef;       /* unitless */
+    double            riser_H;       /* m */
+    double            spillway_L;     /* m */
+    double            spillway_coef;   /* unitless */
+    double            spillway_H;       /* m */
+    int               orifice_n; /* integer - mudt be <= 4 */
+    double            orifice_D;    /* m */
+    double            orifice_coef;    /* unitless  */
+    double            orifice_H;     /* m */
+    // Now  the optional orifice parameters - up to 4
+    double            orifice_D_2;    /* m */
+    double            orifice_coef_2;    /* unitless   */
+    double            orifice_H_2;     /* m */
+    double            orifice_D_3;    /* m */
+    double            orifice_coef_3;    /* unitless  */
+    double            orifice_H_3;     /* m  */
+    double            orifice_D_4;    /* m  */
+    double            orifice_coef_4;    /* unitless   */
+    double            orifice_H_4;     /* m */
+};
+
 
 /*----------------------------------------------------------*/
 /*	Define an patch object	 								*/	
@@ -1584,6 +1619,18 @@ struct patch_object
 	struct  litter_n_object	litter_ns;
     	struct cdayflux_patch_struct	cdf;
     	struct ndayflux_patch_struct	ndf;
+     
+/*----------------------------------------------------------*/
+/*        Patch Vairables required for SCM */
+/*----------------------------------------------------------*/
+        struct  scm_default **scm_defaults;
+        // NOTE: These may need to be initialized in patch_daily_I.c to be used
+        double  preday_ET;            /* m water */
+        double  preday_scm_inflow;   /* m water */
+        double  preday_scm_outflow;  /* m water */
+        double  preday_scm_volume;   /* m water */
+        double  **scm_stage_storage;   /* array, 1000x3. columns are depth, volumne and surface area in: m | m3 | m2 water */
+        double  scm_temp;            /* deg C*/     
 	};
 
 /*----------------------------------------------------------*/
@@ -1770,6 +1817,7 @@ struct	command_line_object
 	int		start_flag;
 	int		end_flag;
 	int		firespread_flag;
+     int		scm_flag;
 	int		prev_flag;
 	int		gw_flag;
 	int		tchange_flag;
@@ -2377,6 +2425,31 @@ struct epconst_struct
 
 
 
+/*----------------------------------------------------------*/
+/*        Define the algae default params. structure.       */
+/*----------------------------------------------------------*/
+struct        algae_struct
+{
+    double growth_rate;      /* d^-1 */
+    double growth_temptheta; /* unitless */
+    double light_extinct;    /* kJ / (m^2 * day) */
+    double light_optimum;    /* kJ / (m^2 * day) */
+    double nitro_halfsat;    /* kg/m^3 */
+    double phos_halfsat;     /* kg/m^3 */
+    double phos_conc;       /* kg/m^3 -- Ambient P conc in scm - static Conc, brought in algae def file */
+    double death_rate;       /* d^-1 */
+    double death_temptheta;  /* unitless */
+    double scm_photo_depth;  /* m */
+    double npref_coeff;      /* kg/m^3 */
+    double chla_to_C;        /* kg/m^2 Chla : kg/m^2 C */
+    double chla_to_N;        /* kg/m^2 Chla : kg/m^2 N */
+    double K_reflectance;    /* unitless, zero to 1 - used for PAR and radiation, both diffuse and direct*/
+};
+
+
+
+
+
 
 	
 
@@ -2413,6 +2486,7 @@ struct	stratum_default
 	double	ustar_overu;			/* DIM	*/
 	struct	epconst_struct	epc;
 	struct	mrconst_struct	mrc;
+     struct        algae_struct algae;
 	};
 
 /*----------------------------------------------------------*/
@@ -2427,6 +2501,20 @@ struct	stratum_default
         double lwp;
 	double minNSC;
         };
+
+/*----------------------------------------------------------*/
+/*        Define the algae strata state variable structure. */
+/*----------------------------------------------------------*/
+struct        algae_strata_object
+{
+    double chla;
+    double Nuptake;
+    double Nrelease;
+    double Cfixed;
+    double totalN;
+    double totalC;
+};
+
 
 
 /*----------------------------------------------------------*/
@@ -2481,6 +2569,7 @@ struct	canopy_strata_object
  	struct  accumulate_strata_object        acc_month;
         struct  accumulate_strata_object        acc_year;
 	struct	mult_conduct_struct	mult_conductance;
+     struct        algae_strata_object  algae;
 	};
 
 

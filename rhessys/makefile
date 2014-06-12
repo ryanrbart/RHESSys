@@ -1,5 +1,5 @@
-PGM  = rhessys5.18.r4
-VERSION = 5.18.r4
+PGM  = rhessys5.18.r4.scm.1
+VERSION = 5.18.r4.scm.1
 CC = gcc 
 #CFLAGS = -O -std=c99
 CFLAGS = -g -std=c99
@@ -12,6 +12,7 @@ OBJECTS = \
 $(OBJ)/Ksat_z_curve.o \
 $(OBJ)/add_growth_headers.o \
 $(OBJ)/add_headers.o \
+$(OBJ)/algae_stratum_daily_F.o \
 $(OBJ)/alloc.o \
 $(OBJ)/allocate_annual_growth.o \
 $(OBJ)/allocate_daily_growth.o \
@@ -76,6 +77,7 @@ $(OBJ)/compute_snow_sublimation.o \
 $(OBJ)/compute_soil_water_potential.o \
 $(OBJ)/compute_stability_correction.o \
 $(OBJ)/compute_subsurface_routing.o \
+$(OBJ)/compute_stage_storage.o \
 $(OBJ)/compute_stream_routing.o \
 $(OBJ)/compute_surface_heat_flux.o \
 $(OBJ)/compute_subsurface_temperature_profile.o \
@@ -111,6 +113,7 @@ $(OBJ)/construct_ddn_routing_topology.o \
 $(OBJ)/construct_surface_energy_defaults.o \
 $(OBJ)/construct_fire_defaults.o \
 $(OBJ)/construct_soil_defaults.o \
+$(OBJ)/construct_scm_defaults.o \
 $(OBJ)/construct_stratum_defaults.o \
 $(OBJ)/construct_tec.o \
 $(OBJ)/construct_tec_entry.o \
@@ -131,6 +134,7 @@ $(OBJ)/destroy_output_fileset.o \
 $(OBJ)/destroy_patch.o \
 $(OBJ)/destroy_fire_defaults.o \
 $(OBJ)/destroy_surface_energy_defaults.o \
+$(OBJ)/destroy_scm_defaults.o \
 $(OBJ)/destroy_soil_defaults.o \
 $(OBJ)/destroy_stratum_defaults.o \
 $(OBJ)/destroy_tec.o \
@@ -336,6 +340,8 @@ $(OBJ)/construct_surface_energy_defaults.o: init/construct_surface_energy_defaul
 	$(CC) -c $(CFLAGS) -I include init/construct_surface_energy_defaults.c -o $(OBJ)/construct_surface_energy_defaults.o
 $(OBJ)/construct_fire_defaults.o: init/construct_fire_defaults.c
 	$(CC) -c $(CFLAGS) -I include init/construct_fire_defaults.c -o $(OBJ)/construct_fire_defaults.o
+$(OBJ)/construct_scm_defaults.o: init/construct_scm_defaults.c
+	$(CC) -c $(CFLAGS) -I include init/construct_scm_defaults.c -o $(OBJ)/construct_scm_defaults.o
 $(OBJ)/construct_soil_defaults.o: init/construct_soil_defaults.c
 	$(CC) -c $(CFLAGS) -I include init/construct_soil_defaults.c -o $(OBJ)/construct_soil_defaults.o
 $(OBJ)/construct_landuse_defaults.o: init/construct_landuse_defaults.c
@@ -474,6 +480,8 @@ $(OBJ)/create_random_distrb.o: util/create_random_distrb.c
 	$(CC) -c $(CFLAGS) -I include util/create_random_distrb.c -o $(OBJ)/create_random_distrb.o
 $(OBJ)/compute_mean_hillslope_parameters.o: init/compute_mean_hillslope_parameters.c
 	$(CC) -c $(CFLAGS) -I include init/compute_mean_hillslope_parameters.c -o $(OBJ)/compute_mean_hillslope_parameters.o
+$(OBJ)/compute_stage_storage.o: init/compute_stage_storage.c
+	$(CC) -c $(CFLAGS) -I include init/compute_stage_storage.c -o $(OBJ)/compute_stage_storage.o
 $(OBJ)/compute_radiative_fluxes.o: rad/compute_radiative_fluxes.c
 	$(CC) -c $(CFLAGS) -I include rad/compute_radiative_fluxes.c -o $(OBJ)/compute_radiative_fluxes.o
 $(OBJ)/compute_diffuse_radiative_fluxes.o: rad/compute_diffuse_radiative_fluxes.c
@@ -528,6 +536,8 @@ $(OBJ)/destroy_surface_energy_defaults.o: init/destroy_surface_energy_defaults.c
 	$(CC) -c $(CFLAGS) -I include init/destroy_surface_energy_defaults.c -o $(OBJ)/destroy_surface_energy_defaults.o
 $(OBJ)/destroy_fire_defaults.o: init/destroy_fire_defaults.c
 	$(CC) -c $(CFLAGS) -I include init/destroy_fire_defaults.c -o $(OBJ)/destroy_fire_defaults.o
+$(OBJ)/destroy_scm_defaults.o: init/destroy_scm_defaults.c
+	$(CC) -c $(CFLAGS) -I include init/destroy_scm_defaults.c -o $(OBJ)/destroy_scm_defaults.o
 $(OBJ)/destroy_soil_defaults.o: init/destroy_soil_defaults.c
 	$(CC) -c $(CFLAGS) -I include init/destroy_soil_defaults.c -o $(OBJ)/destroy_soil_defaults.o
 $(OBJ)/destroy_landuse_defaults.o: init/destroy_landuse_defaults.c
@@ -678,6 +688,8 @@ $(OBJ)/canopy_stratum_daily_I.o: cycle/canopy_stratum_daily_I.c
 	$(CC) -c $(CFLAGS) -I include cycle/canopy_stratum_daily_I.c -o $(OBJ)/canopy_stratum_daily_I.o
 $(OBJ)/canopy_stratum_daily_F.o: cycle/canopy_stratum_daily_F.c
 	$(CC) -c $(CFLAGS) -I include cycle/canopy_stratum_daily_F.c -o $(OBJ)/canopy_stratum_daily_F.o
+$(OBJ)/algae_stratum_daily_F.o: cycle/algae_stratum_daily_F.c
+	$(CC) -c $(CFLAGS) -I include cycle/algae_stratum_daily_F.c -o $(OBJ)/algae_stratum_daily_F.o
 $(OBJ)/world_hourly.o: cycle/world_hourly.c
 	$(CC) -c $(CFLAGS) -I include cycle/world_hourly.c -o $(OBJ)/world_hourly.o
 $(OBJ)/basin_hourly.o: cycle/basin_hourly.c 
