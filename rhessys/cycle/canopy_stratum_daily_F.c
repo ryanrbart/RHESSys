@@ -582,6 +582,8 @@ void	canopy_stratum_daily_F(
 						   zone,
 						   patch);
 		
+
+	 stratum[0].Lstar = 0.0;
 		
 		if ( stratum[0].Kstar_direct < -1 ) {
 			printf("CANOPY_START ID=%d: pai=%lf snowstor=%lf APARused=%lf APARdir=%lf APAR=%lf Rnet_used=%lf Kstardir=%lf Kstar=%lf Lstar=%lf \n", 
