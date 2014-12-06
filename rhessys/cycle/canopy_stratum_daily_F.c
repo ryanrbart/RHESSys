@@ -152,6 +152,7 @@ void	canopy_stratum_daily_F(
 		double	,
 		double	,
 		double	,
+		double	,
 		double, int,
 		struct canopy_strata_object *,
 		struct patch_object *);
@@ -582,9 +583,7 @@ void	canopy_stratum_daily_F(
 						   patch);
 		
 		
-	 stratum[0].Lstar = 0.0;
-
-	if ( stratum[0].Kstar_direct < -1 ) {
+		if ( stratum[0].Kstar_direct < -1 ) {
 			printf("CANOPY_START ID=%d: pai=%lf snowstor=%lf APARused=%lf APARdir=%lf APAR=%lf Rnet_used=%lf Kstardir=%lf Kstar=%lf Lstar=%lf \n", 
 				   stratum[0].ID,
 				   stratum[0].epv.proj_pai,
@@ -893,6 +892,7 @@ void	canopy_stratum_daily_F(
 		stratum[0].defaults[0][0].epc.psi_threshold,
 		stratum[0].defaults[0][0].epc.psi_slp,
 		stratum[0].defaults[0][0].epc.psi_intercpt,
+		stratum[0].defaults[0][0].epc.psi_offset,
 		stratum[0].defaults[0][0].epc.gl_smax,
 		stratum[0].defaults[0][0].epc.topt,
 		stratum[0].defaults[0][0].epc.tcoef,
@@ -928,6 +928,7 @@ void	canopy_stratum_daily_F(
 		stratum[0].defaults[0][0].epc.psi_threshold,
 		stratum[0].defaults[0][0].epc.psi_slp,
 		stratum[0].defaults[0][0].epc.psi_intercpt,
+		stratum[0].defaults[0][0].epc.psi_offset,
 		stratum[0].defaults[0][0].epc.gl_smax,
 		stratum[0].defaults[0][0].epc.topt,
 		stratum[0].defaults[0][0].epc.tcoef,
@@ -955,6 +956,7 @@ void	canopy_stratum_daily_F(
 		stratum[0].defaults[0][0].epc.psi_threshold,
 		stratum[0].defaults[0][0].epc.psi_slp,
 		stratum[0].defaults[0][0].epc.psi_intercpt,
+		stratum[0].defaults[0][0].epc.psi_offset,
 		stratum[0].defaults[0][0].epc.gl_smax,
 		stratum[0].defaults[0][0].epc.topt,
 		stratum[0].defaults[0][0].epc.tcoef,
@@ -992,6 +994,7 @@ void	canopy_stratum_daily_F(
 		stratum[0].defaults[0][0].epc.psi_threshold,
 		stratum[0].defaults[0][0].epc.psi_slp,
 		stratum[0].defaults[0][0].epc.psi_intercpt,
+		stratum[0].defaults[0][0].epc.psi_offset,
 		stratum[0].defaults[0][0].epc.gl_smax,
 		stratum[0].defaults[0][0].epc.topt,
 		stratum[0].defaults[0][0].epc.tcoef,

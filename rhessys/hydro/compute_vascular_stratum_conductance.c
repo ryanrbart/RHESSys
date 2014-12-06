@@ -55,6 +55,7 @@ double	compute_vascular_stratum_conductance(
 											 double	LWP_threshold,
 											 double	LWP_slp,
 											 double	LWP_intercpt,
+											 double LWP_offset,
 											 double	stomatal_conductance_max,
 											 double	topt,     
 											 double	tcoef,
@@ -83,6 +84,7 @@ double	compute_vascular_stratum_conductance(
 	double	leaf_conductance_CO2_curve(double, double);
 
 	double	leaf_conductance_LWP_curve(int,	double,
+		double,
 		double,
 		double,
 		double,
@@ -152,7 +154,7 @@ double	compute_vascular_stratum_conductance(
 	
 	if (LWP_predawn !=  9999.0) {
 		m_LWP = leaf_conductance_LWP_curve(LWP_curve, LWP_predawn,
-			LWP_min_spring,LWP_stom_closure,LWP_threshold, LWP_slp, LWP_intercpt );
+			LWP_min_spring,LWP_stom_closure,LWP_threshold, LWP_slp, LWP_intercpt, LWP_offset);
 
 		/* CHANGED FROM stratum[0].rootzone.potential_sat to patch[0].rootzone.potential_sat... NEED TO CHECK */
 		if ((patch[0].rz_storage > ZERO) && (patch[0].sat_deficit > patch[0].rootzone.potential_sat)) {

@@ -44,7 +44,8 @@ double	leaf_conductance_LWP_curve(int curve,
 			        double	LWP_stom_closure,
 				double  LWP_threshold,
 				double  slp,
-				double  intercpt) 	
+				double  intercpt,
+				double  LWP_offset) 	
 {
 	/*--------------------------------------------------------------*/
 	/*	Local function declaration									*/
@@ -77,6 +78,7 @@ double	leaf_conductance_LWP_curve(int curve,
 		if (LWP_predawn < LWP_threshold)	{
 			estimate = slp*(LWP_predawn-LWP_threshold)+intercpt;
 			m_LWP = pow(estimate,curve);
+			m_LWP = m_LWP + LWP_offset;
 			m_LWP = max(m_LWP,0);
 			m_LWP = min(m_LWP, 1);
 		}

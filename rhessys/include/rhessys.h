@@ -2408,6 +2408,7 @@ struct epconst_struct
 	double psi_threshold;      /* (MPa) psi at complete conductance reduction begins */
 	double psi_slp;      /* (/MPa) slope of conductance reduction curve */
 	double psi_intercpt;      /* (0-1) intercept of conductance reduction curve */
+	double psi_offset;	/* adjustment conductance reduction curve for given psi */
 	double vpd_open;       /* (Pa) vpd at start of conductance reduction */
 	double vpd_close;      /* (Pa) vpd at complete conductance reduction */
 	double gl_smax;        /* (m/s) maximum leaf-scale stomatal conductance */
